@@ -14,8 +14,8 @@ function App() {
       method: 'get',
       url: `https://api.websitecarbon.com/site?url=${searchTerm}`,
     })
-      .then(function (response) {
-        console.log(response);
+      .then((res) => {
+        console.log(res);
       });
   }
 
