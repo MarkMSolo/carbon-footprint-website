@@ -3,20 +3,26 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import "@cloudscape-design/global-styles/index.css";
 
-import {Input, Button} from "@cloudscape-design/components";
+import {Input, Button, Box} from "@cloudscape-design/components";
 
 function App() {
 
   const [value, setValue] = useState("google.com");
+  const [resp, setResp] = useState({
+    bytes: 0,
+    cleanerThan: 0,
+    green: false,
+    rating: "N/A"
+  });
 
   const calcCarbonFootprint = (searchTerm) => {
-    axios({
-      method: 'get',
-      url: `https://api.websitecarbon.com/site?url=${searchTerm}`,
+      axios.get(`https://api.websitecarbon.com/site?url=${searchTerm}`)
+    .then((res) => {
+      console.log(res);
+      setResp(res.data)
+    }).catch((err) => {
+      console.log(err);
     })
-      .then((res) => {
-        console.log(res);
-      });
   }
 
   return (
@@ -27,6 +33,14 @@ function App() {
     />
     <Button onClick={calcCarbonFootprint(value)} 
     variant="primary">Calculate website carbon footprint</Button>
+    <Box>
+      Bytes: {resp.bytes} 
+
+      Cleaner Than: {resp.cleanerThan}
+      Green: {resp.green}
+      Rating: {resp.rating}
+    </Box>
+    
     </div>
   );
 }
